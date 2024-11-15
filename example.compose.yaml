@@ -8,5 +8,5 @@ services:
       - '80:80'
     container_name: eumaios-backend
     volumes:
-      - "/example:/example"
+      - "/example:/data/www"
       - "/example/localcerts:/etc/ssl/localcerts"
