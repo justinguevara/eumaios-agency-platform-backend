@@ -1,0 +1,12 @@
+version: '3'
+services: 
+  web:
+    image: php-nginx-standard
+    build: container
+    ports: 
+      - '443:443'
+      - '80:80'
+    container_name: eumaios-backend
+    volumes:
+      - "/example:/example"
+      - "/example/localcerts:/etc/ssl/localcerts"
