@@ -29,11 +29,8 @@ Route::controller(PublishersController::class)
             Route::get('1/publishers', 'index');
             Route::post('1/publishers', 'store');
             Route::get('1/publishers/{publisher}', 'show');
-            // TODO
-            /*
             Route::put('1/publishers/{publisher}', 'update');
-            Route::destroy('1/publishers/{publisher}', 'destroy');
-            */
+            Route::delete('1/publishers/{publisher}', 'destroy');
         }
     );
 

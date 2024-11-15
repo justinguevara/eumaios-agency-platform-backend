@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Publisher;
 use \App\Http\Requests\CreatePublisherRequest;
+use \App\Http\Requests\UpdatePublisherRequest;
 
 class PublishersController extends Controller
 {
@@ -40,24 +41,24 @@ class PublishersController extends Controller
             ->json(['publisher' => $publisher,]);
     }
 
-    // TODO
     /**
      * Update the specified resource in storage.
      */
-     /*
-    public function update(Request $request, string $id)
+    public function update(UpdatePublisherRequest $request, Publisher $publisher)
     {
-        //
+        $request_parameters = $request->validated();
+        $publisher->update($request_parameters['publisher'] ?? []);
+        return response()->json(['publisher' => $publisher,]);
     }
-    */
 
     /**
      * Remove the specified resource from storage.
      */
-    /*
-    public function destroy(string $id)
+    public function destroy (Publisher $publisher)
     {
-        //
+        $id = $publisher->id;
+        $publisher->delete();
+        return response()
+            ->json(['message' => "Publisher {$id} deleted."]);
     }
-    */
 }
