@@ -23,10 +23,16 @@ class Publisher extends Model
     private ?int $address_country_id;
     private ?string $address_country;
     private ?string $address_postal_code;
+    private int $network_id;
 
     protected $fillable = [
         'name', 'description', 'contact_name', 'contact_email', 'contact_phone_number',
         'address_street_1', 'address_street_2', 'address_city', 'address_region',
-        'address_country_id', 'address_postal_code'
+        'address_country_id', 'address_postal_code', 'network_id'
     ];
+
+    public function network(): BelongsTo
+    {
+        return $this->belongsTo(Network::class);
+    }
 }

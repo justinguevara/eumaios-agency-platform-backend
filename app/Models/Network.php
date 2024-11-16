@@ -14,12 +14,15 @@ class Network extends Model
         'name',
     ];
 
-    /**
-     * Get the comments for the blog post.
-     */
     public function publishers(): HasMany
     {
         // networks.id -> publishers.network_id 
         return $this->hasMany(Publisher::class);
+    }
+
+    public function advertisers(): HasMany
+    {
+        // networks.id -> publishers.network_id 
+        return $this->hasMany(Advertiser::class);
     }
 }

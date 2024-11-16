@@ -11,7 +11,6 @@ class CreateNetworkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //~~~ TODO admin only
         return true;
     }
 

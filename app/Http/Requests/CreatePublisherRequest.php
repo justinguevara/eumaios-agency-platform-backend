@@ -25,7 +25,7 @@ class CreatePublisherRequest extends FormRequest
     {
         return [ 
             'publisher.name' => ['present', 'min:1', 'max:255',],
-            'publisher.description' => ['nullable', 'string', 'min:1',], // TODO why empty string = " "
+            'publisher.description' => ['nullable', 'string', 'min:1',], // TODO
             'publisher.contact_name' => ['nullable', 'string', 'min:1', 'max:255',],
             'publisher.contact_email' => ['nullable', 'string','email:rfc'],
             'publisher.contact_phone_number' => ['nullable', 'string','min:1', 'max:255',], // TODO
@@ -35,6 +35,7 @@ class CreatePublisherRequest extends FormRequest
             'publisher.address_region' => ['nullable', 'string','min:1', 'max:255',],
             'publisher.address_country_id' => ['nullable', Rule::in(Countries::pluck('id')->toArray())], // TODO optimize
             'publisher.address_postal_zip' => ['nullable', 'string','min:1', 'max:255',], // TODO
+            'publisher.network_id' => ['nullable', 'numeric', 'min:1', 'max:18446744073709551615',], // TODO
         ];
     }
 }

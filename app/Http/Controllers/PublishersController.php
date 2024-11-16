@@ -15,8 +15,7 @@ class PublishersController extends Controller
     public function index()
     {
         // TODO pagination
-        return response()
-            ->json(['publishers' => Publisher::all()]);
+        return response()->json(['publishers' => Publisher::all()]);
     }
 
     /**
@@ -28,8 +27,7 @@ class PublishersController extends Controller
 
         $publisher = Publisher::create($request_parameters['publisher']);
 
-        return response()
-            ->json(['publisher' => $publisher,]);
+        return response()->json(['publisher' => $publisher,]);
     }
 
     /**
@@ -37,8 +35,7 @@ class PublishersController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        return response()
-            ->json(['publisher' => $publisher,]);
+        return response()->json(['publisher' => $publisher,]);
     }
 
     /**
@@ -58,7 +55,6 @@ class PublishersController extends Controller
     {
         $id = $publisher->id;
         $publisher->delete();
-        return response()
-            ->json(['message' => "Publisher {$id} deleted."]);
+        return response()->json(['message' => "Publisher {$id} deleted."]);
     }
 }

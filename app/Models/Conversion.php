@@ -8,14 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Conversion extends Model
 {
     private string $conversion_type;
+    private int $campaign_id;
 
-    // TODO review
-    /**
-     */
-     /*
-    public function campaign(): HasOne
+    public function campaign(): BelongsTo
     {
-        return $this->hasOne(Campaign::class);
+        return $this->belongsTo(Campaign::class);
     }
-    */
 }
