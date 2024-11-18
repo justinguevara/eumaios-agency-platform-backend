@@ -11,6 +11,11 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\NetworksController;
 use App\Http\Controllers\PublishersController;
+use App\Http\Controllers\CampaignsController;
+
+Route::resources([
+    '1/campaigns' => CampaignsController::class,
+]);
 
 Route::controller(NetworksController::class)
     ->group(
