@@ -12,8 +12,10 @@ return [
     | based disks are available to your application for file storage.
     |
     */
-
+    // disabled - not needed
+    /*
     'default' => env('FILESYSTEM_DISK', 'local'),
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +29,8 @@ return [
     | Supported drivers: "local", "ftp", "sftp", "s3"
     |
     */
-
+    // disabled - not needed
+    /*
     'disks' => [
 
         'local' => [
@@ -41,7 +44,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'visibility' => 'private',
             'throw' => false,
         ],
 
@@ -58,6 +61,7 @@ return [
         ],
 
     ],
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -69,9 +73,11 @@ return [
     | the locations of the links and the values should be their targets.
     |
     */
-
+    // disabled - not needed
+    /*
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
+    */
 
 ];

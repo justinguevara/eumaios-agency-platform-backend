@@ -3,7 +3,7 @@
 use \Illuminate\Foundation\Application;
 use \Illuminate\Foundation\Configuration\Exceptions;
 use \Illuminate\Foundation\Configuration\Middleware;
-use \App\Http\Middleware\ForceXRequestedHeaderValueMiddleware;
+use \Symfony\Component\HttpKernel\Exception\HttpException;
 use \Illuminate\Http\Response;
 use \Illuminate\Http\Request;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,22 +14,42 @@ use \Illuminate\Validation\ValidationException;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         api : __DIR__.'/../routes/api.php',
-        apiPrefix : 'api',
+        apiPrefix : 'api'
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->group('web', []); // TODO review
-        $middleware->group('api', [
-            // TODO review comment - disable default middleware
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Illuminate\Session\Middleware\StartSession::class,
+        $middleware->alias([
+            'force-api-header' => \App\Http\Middleware\ForceXRequestedHeaderValueMiddleware::class,
+            'run-csrf-check' => \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class
         ]);
 
-        $middleware->append(ForceXRequestedHeaderValueMiddleware::class);
-    })
-    ->withExceptions(function (Exceptions $exceptions) {
+        $middleware->group('web', [
+            // disable defaults
+            // \Illuminate\Cookie\Middleware\EncryptCookies
+            // \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse
+            // \Illuminate\Session\Middleware\StartSession
+            // \Illuminate\View\Middleware\ShareErrorsFromSession
+            // \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken
+            // \Illuminate\Routing\Middleware\SubstituteBindings
+        ]);
+        $middleware->group('api', [
+            \Illuminate\Routing\Middleware\SubstituteBindings::class, // model binding
+            \Illuminate\Session\Middleware\StartSession::class, // auth
+            'force-api-header',
+        ]);
+    })->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if ($e->getStatusCode() === 419) { // 419 - Laravel specific CSRF error code
+                return response()->json([
+                    'message' => 'Invalid CSRF token.'
+                ], Response::HTTP_FORBIDDEN);
+            } else {
+                throw new Exception($e->getMessage(), $e->getStatusCode(), $e);
+            }
+        });
+     
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             return response()->json([
-                'message' => 'Entity not found'
+                'message' => 'Entity not found.'
             ], Response::HTTP_NOT_FOUND);
         });
 
@@ -41,25 +61,32 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized.'
             ], Response::HTTP_FORBIDDEN);
         });
 
         $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized.'
             ], Response::HTTP_FORBIDDEN);
         });
 
         // Illuminate\Database\Eloquent\MassAssignmentException
         $exceptions->render(function (Throwable $e, Request $request) {
+            if ($e->getCode() === Response::HTTP_NOT_FOUND) {
+                return response()->json([
+                    'message' => 'Unknown route.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             if (env('APP_ENV') === 'local') {
                 var_dump($e->getMessage());
+                var_dump($e->getCode());
                 var_dump(get_class($e));
             }
 
             return response()->json([
-                'message' => 'Internal server error'
+                'message' => 'Internal server error.'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         });
     })->create();
