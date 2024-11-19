@@ -26,7 +26,7 @@ Route::middleware(['run-csrf-check'])->group(function () {
     });
 
     Route::middleware(['auth',])
-        ->controller(NetworksController::class)
+        ->controller(PublishersController::class)
         ->group(function () {
             Route::get('1/publishers', 'index');
             Route::post('1/publishers', 'store');
@@ -36,7 +36,7 @@ Route::middleware(['run-csrf-check'])->group(function () {
     });
 
     Route::middleware(['auth'])
-        ->controller(PublishersController::class)
+        ->controller(NetworksController::class)
         ->group(function () {
             Route::get('1/networks', 'index');
             Route::post('1/networks', 'store');
