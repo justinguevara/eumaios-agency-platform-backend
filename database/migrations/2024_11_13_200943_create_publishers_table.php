@@ -31,7 +31,7 @@ return new class extends Migration
                 ->nullable();
             $table->string('address_region')
                 ->nullable();
-            $table->unsignedBigInteger('address_country')
+            $table->unsignedBigInteger('address_country_id')
                 ->nullable();
             $table->string('address_postal_zip')
                 ->nullable();

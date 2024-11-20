@@ -22,3 +22,4 @@ yarn-error.log
 /.zed
 /local.readme.txt
 /compose.yaml
+/phpunit.xml
