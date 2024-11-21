@@ -6,21 +6,39 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Network;
 
+use PHPUnit\Framework\Attributes\Test;
+
 class NetworkTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testNetworkPublishers(): void
+    private ?Network $network;
+
+    #[Test]
+    public function publishers(): void
     {
-        $network = Network::factory()->make();
-        $publishers = $network->publishers();
+        $publishers = $this->network->publishers();
         $this->assertEquals('Illuminate\Database\Eloquent\Relations\HasMany', get_class($publishers));
     }
 
-    public function testNetworkAdvertisers(): void
+    #[Test]
+    public function advertisers(): void
     {
-        $network = Network::factory()->make();
-        $publishers = $network->publishers();
-        $this->assertEquals('Illuminate\Database\Eloquent\Relations\HasMany', get_class($publishers));
+        $advertisers = $this->network->publishers();
+        $this->assertEquals('Illuminate\Database\Eloquent\Relations\HasMany', get_class($advertisers));
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->network = Network::factory()->make();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    
+        $this->network = null;
     }
 }
