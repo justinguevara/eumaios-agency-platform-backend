@@ -20,9 +20,9 @@ class PublishersControllerTest extends TestCase
     #[Test]
     public function index()
     {
-        Publisher::factory()->create(['name' => 'P1']);
-        Publisher::factory()->create(['name' => 'P2']);
-        $publishers = Publisher::all()->toArray();
+        $publishers = Publisher::factory()
+            ->count(12)
+            ->create();
 
         $response = $this->controller->index();
         
