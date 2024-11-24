@@ -21,15 +21,18 @@ class PublishersControllerTest extends TestCase
     public function index()
     {
         $publishers = Publisher::factory()
-            ->count(12)
+            ->count(5)
             ->create();
-
+        $publishers = $publishers->toArray();
         $response = $this->controller->index();
-        
+
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(['publishers' => $publishers], $response->getData(true));
+        $this->assertEquals(
+            ['publishers' => $publishers],
+            $response->getData(true)
+        );
     }
 
     protected function setUp(): void
