@@ -47,7 +47,7 @@ class Publisher extends Model
 
     /**
     * This method definition is redundant due to the conventions used by laravel,
-    * but wil be kept here for reference purposes.
+    * but wil be kept for reference purposes.
     */
     protected static function newFactory()
     {
