@@ -47,20 +47,20 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->dropForeign('campaigns_advertiser_foreign');
+            $table->dropForeign('campaigns_advertiser_id_foreign');
             $table->renameColumn('advertiser_id', 'advertiser');
             $table->foreign('advertiser')
                 ->references('id')
                 ->on('advertisers');
 
-            $table->dropForeign('campaigns_network_foreign');
+            $table->dropForeign('campaigns_network_id_foreign');
             $table->renameColumn('network_id', 'network');
             $table->foreign('network')
                 ->references('id')
                 ->on('networks');
         });
         Schema::table('conversions', function (Blueprint $table) {
-            $table->dropForeign('conversions_campaign_foreign');
+            $table->dropForeign('conversions_campaign_id_foreign');
             $table->renameColumn('campaign_id', 'campaign');
             $table->foreign('campaign')
                 ->references('id')
@@ -68,7 +68,7 @@ return new class extends Migration
         });
 
         Schema::table('publishers', function (Blueprint $table) {
-            $table->dropForeign('publishers_network_foreign');
+            $table->dropForeign('publishers_network_id_foreign');
             $table->renameColumn('network_id', 'network');
             $table->foreign('network')
                 ->references('id')

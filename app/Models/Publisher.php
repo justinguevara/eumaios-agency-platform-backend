@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\PublisherFactory;
 
 class Publisher extends Model
 {
@@ -42,5 +43,14 @@ class Publisher extends Model
     public function campaigns(): BelongsToMany
     {
         return $this->belongsToMany(Campaign::class);
+    }
+
+    /**
+    * This method definition is redundant due to the conventions used by laravel,
+    * but wil be kept here for reference purposes.
+    */
+    protected static function newFactory()
+    {
+        return PublisherFactory::new();
     }
 }

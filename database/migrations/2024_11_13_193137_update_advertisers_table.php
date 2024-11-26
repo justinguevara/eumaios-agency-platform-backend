@@ -39,9 +39,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('advertisers', function (Blueprint $table) {
-            $table->dropForeign('advertisers_address_country_foreign');
+           $table->dropForeign('advertisers_address_country_foreign');
 
-            $table->dropSoftDeletes();
+           $table->dropSoftDeletes();
 
             $table->dropColumn('description');
             $table->dropColumn('contact_name');
@@ -49,7 +49,6 @@ return new class extends Migration
             $table->dropColumn('contact_phone_number');
             $table->dropColumn('address_country');
             $table->dropColumn('address_postal_zip');
-            $table->dropColumn('network');
         });
     }
 };
