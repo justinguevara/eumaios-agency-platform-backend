@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Publisher;
 use App\Models\Network;
 
-class DevEnvironmentSeeder extends Seeder
+class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
