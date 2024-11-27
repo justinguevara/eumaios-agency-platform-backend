@@ -30,7 +30,6 @@ return new class extends Migration
             $table->unsignedBigInteger('network');
 
             $table->foreign('advertiser')->references('id')->on('advertisers');
-            $table->foreign('network')->references('id')->on('networks');
         });
     }
 
