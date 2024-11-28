@@ -43,7 +43,7 @@ Route::middleware(['run-csrf-check'])->group(function () {
     });
 
     Route::post('1/login', [AuthenticatedSessionController::class, 'store'])
-        // ->middleware('guest') // TODO review
+        // ->middleware('guest') // @todo review
         ->name('login');
 
     Route::middleware(['auth'])->group(function () {
@@ -61,7 +61,7 @@ Route::middleware(['run-csrf-check'])->group(function () {
     });
 });
 
-// TODO review/implement
+// @todo review/implement
 /*
 Route::post('1/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
