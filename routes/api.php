@@ -11,12 +11,9 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\NetworksController;
 use App\Http\Controllers\PublishersController;
 use App\Http\Controllers\CampaignsController;
+use App\Http\Controllers\CsrfTokenController;
 
-Route::get('1/csrf-token', function (Request $request) {
-    $csrf_token = csrf_token();
-
-    return response()->json(['csrf_token' => $csrf_token,]);
-});
+Route::get('1/csrf-token', [CsrfTokenController::class, 'show']);
 
 Route::middleware(['run-csrf-check'])->group(function () {
     Route::middleware(['auth'])->group(function () {
