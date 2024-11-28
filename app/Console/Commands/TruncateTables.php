@@ -33,11 +33,14 @@ class TruncateTables extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
+        $status_code = 0;
+
         $env = App::environment();
         if ($env !== 'local') {
             $this->info('This command can only be run for a local environment.');
+            $status_code = 1;
         } elseif ($this->confirm('Confirm truncate.', false)) {
             foreach (static::TARGET_TABLES as $table_name) {
                 DB::table($table_name)->delete();
@@ -46,6 +49,9 @@ class TruncateTables extends Command
             $this->info('Truncate complete.');
         } else {
             $this->info('Truncate cancelled.');
+            $status_code = 1;
         }
+
+        return $status_code;
     }
 }
