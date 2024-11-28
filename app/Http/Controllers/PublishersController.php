@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use \App\Models\Publisher;
 use \App\Http\Requests\CreatePublisherRequest;
 use \App\Http\Requests\UpdatePublisherRequest;
+use \App\Http\Resources\PublisherCollection;
+use \App\Http\Resources\PublisherResource;
 
 class PublishersController extends Controller
 {
@@ -14,8 +16,8 @@ class PublishersController extends Controller
      */
     public function index()
     {
-        // TODO pagination
-        return response()->json(['publishers' => Publisher::all()]);
+        // @todo pagination
+        return new PublisherCollection(Publisher::all());
     }
 
     /**
@@ -26,8 +28,7 @@ class PublishersController extends Controller
         $request_parameters = $request->validated();
 
         $publisher = Publisher::create($request_parameters['publisher']);
-
-        return response()->json(['publisher' => $publisher,]);
+        return new PublisherResource($publisher);
     }
 
     /**
@@ -35,7 +36,7 @@ class PublishersController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        return response()->json(['publisher' => $publisher,]);
+        return new PublisherResource($publisher);
     }
 
     /**
@@ -45,7 +46,7 @@ class PublishersController extends Controller
     {
         $request_parameters = $request->validated();
         $publisher->update($request_parameters['publisher'] ?? []);
-        return response()->json(['publisher' => $publisher,]);
+        return new PublisherResource($publisher);
     }
 
     /**
