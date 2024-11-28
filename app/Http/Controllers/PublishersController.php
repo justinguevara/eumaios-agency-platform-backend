@@ -14,10 +14,9 @@ class PublishersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // @todo pagination
-        return new PublisherCollection(Publisher::all());
+        return new PublisherCollection(Publisher::paginate());
     }
 
     /**
