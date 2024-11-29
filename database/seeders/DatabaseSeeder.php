@@ -12,6 +12,7 @@ use App\Models\Publisher;
 use App\Models\Network;
 use App\Models\Advertiser;
 use App\Models\Campaign;
+use Database\Seeders\ConversionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -102,5 +103,9 @@ class DatabaseSeeder extends Seeder
             ])
             ->count(10)
             ->create();
+
+        $this->call([
+            ConversionSeeder::class,
+        ]);
     }
 }
