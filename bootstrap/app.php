@@ -10,6 +10,8 @@ use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Illuminate\Auth\AuthenticationException;
 use \Illuminate\Validation\ValidationException;
+use \Illuminate\Http\Exceptions\HttpResponseException;
+use \App\Exceptions\RateLimitedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -71,6 +73,19 @@ return Application::configure(basePath: dirname(__DIR__))
             ], Response::HTTP_FORBIDDEN);
         });
 
+        $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
+            return response()->json([
+                'message' => 'Unauthorized.'
+            ], Response::HTTP_FORBIDDEN);
+        });
+
+        $exceptions->render(function (RateLimitedException $e, Request $request) {
+            return response()->json([
+                'message' => 'Rate limited.'
+            ], Response::HTTP_TOO_MANY_REQUESTS);
+        });
+
+        // Exceptions to consider:
         // Illuminate\Database\Eloquent\MassAssignmentException
         $exceptions->render(function (Throwable $e, Request $request) {
             if ($e->getCode() === Response::HTTP_NOT_FOUND) {
@@ -82,6 +97,8 @@ return Application::configure(basePath: dirname(__DIR__))
             if (env('APP_ENV') === 'local') {
                 var_dump($e->getMessage());
                 var_dump($e->getCode());
+                var_dump($e->getLine());
+                var_dump($e->getFile());
                 var_dump(get_class($e));
             }
 

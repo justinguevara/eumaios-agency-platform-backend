@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Network::class);
     }
+
+    public function getRateLimit(): int
+    {
+        return 120; // @todo review value
+    }
 }

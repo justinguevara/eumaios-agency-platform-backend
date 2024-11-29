@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'unauthenticated_user_rate_limit' => env('APP_UNAUTHENTICATED_USER_RATE_LIMIT'),
 ];

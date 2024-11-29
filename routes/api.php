@@ -13,50 +13,52 @@ use App\Http\Controllers\PublishersController;
 use App\Http\Controllers\CampaignsController;
 use App\Http\Controllers\CsrfTokenController;
 
-Route::get('1/csrf-token', [CsrfTokenController::class, 'show']);
+Route::middleware(['throttle:api'])->group(function () {
+    Route::get('1/csrf-token', [CsrfTokenController::class, 'show']);
 
-Route::middleware(['run-csrf-check'])->group(function () {
-    Route::middleware(['auth'])->group(function () {
-        Route::apiResources([
-            '1/campaigns' => CampaignsController::class,
-        ]);
-    });
+    Route::middleware(['run-csrf-check'])->group(function () {
+        Route::middleware(['auth'])->group(function () {
+            Route::apiResources([
+                '1/campaigns' => CampaignsController::class,
+            ]);
+        });
 
-    Route::middleware(['auth',])
-        ->controller(PublishersController::class)
-        ->group(function () {
-            Route::get('1/publishers', 'index');
-            Route::post('1/publishers', 'store');
-            Route::get('1/publishers/{publisher}', 'show');
-            Route::put('1/publishers/{publisher}', 'update');
-            Route::delete('1/publishers/{publisher}', 'destroy');
-    });
+        Route::middleware(['auth',])
+            ->controller(PublishersController::class)
+            ->group(function () {
+                Route::get('1/publishers', 'index');
+                Route::post('1/publishers', 'store');
+                Route::get('1/publishers/{publisher}', 'show');
+                Route::put('1/publishers/{publisher}', 'update');
+                Route::delete('1/publishers/{publisher}', 'destroy');
+        });
 
-    Route::middleware(['auth'])
-        ->controller(NetworksController::class)
-        ->group(function () {
-            Route::get('1/networks', 'index');
-            Route::post('1/networks', 'store');
-            Route::get('1/networks/{network}', 'show');
-            Route::put('1/networks/{network}', 'update');
-            // destroy() not implemented - use PUT route
-    });
+        Route::middleware(['auth'])
+            ->controller(NetworksController::class)
+            ->group(function () {
+                Route::get('1/networks', 'index');
+                Route::post('1/networks', 'store');
+                Route::get('1/networks/{network}', 'show');
+                Route::put('1/networks/{network}', 'update');
+                // destroy() not implemented - use PUT route
+        });
 
-    Route::post('1/login', [AuthenticatedSessionController::class, 'store'])
-        // ->middleware('guest') // @todo review
-        ->name('login');
+        Route::post('1/login', [AuthenticatedSessionController::class, 'store'])
+            // ->middleware('guest') // @todo review
+            ->name('login');
 
-    Route::middleware(['auth'])->group(function () {
-        Route::post('1/register-user', [RegisteredUserController::class, 'store'])
-            ->middleware(['auth', App\Http\Middleware\GlobalAccessTokenMiddleware::class])
-            ->name('register');
+        Route::middleware(['auth'])->group(function () {
+            Route::post('1/register-user', [RegisteredUserController::class, 'store'])
+                ->middleware(['auth', App\Http\Middleware\GlobalAccessTokenMiddleware::class])
+                ->name('register');
 
-        Route::post('1/logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->middleware('auth')
-            ->name('logout');
+            Route::post('1/logout', [AuthenticatedSessionController::class, 'destroy'])
+                ->middleware('auth')
+                ->name('logout');
 
-        Route::get('1/user', function (Request $request) {
-            return $request->user();
+            Route::get('1/user', function (Request $request) {
+                return $request->user();
+            });
         });
     });
 });
