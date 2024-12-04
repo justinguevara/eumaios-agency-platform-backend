@@ -13,9 +13,16 @@ use App\Http\Controllers\PublishersController;
 use App\Http\Controllers\CampaignsController;
 use App\Http\Controllers\CsrfTokenController;
 use App\Http\Controllers\GlobalConversionReportController;
+use App\Http\Controllers\MeController;
 
 Route::middleware(['throttle:api'])->group(function () {
     Route::get('1/csrf-token', [CsrfTokenController::class, 'show']);
+});
+
+Route::middleware(['auth', 'run-csrf-check', 'throttle:api'])
+    ->controller(MeController::class)
+    ->group(function () {
+        Route::get('1/me', 'index');
 });
 
 Route::middleware(['auth', 'run-csrf-check', 'throttle:api'])->group(function () {
@@ -23,6 +30,7 @@ Route::middleware(['auth', 'run-csrf-check', 'throttle:api'])->group(function ()
         '1/global-conversion-report' => GlobalConversionReport::class,
     ]);
 });
+
 Route::middleware(['auth', 'run-csrf-check', 'throttle:api'])
     ->controller(GlobalConversionReportController::class)
     ->group(function () {
@@ -70,10 +78,6 @@ Route::middleware(['auth', 'run-csrf-check', 'throttle:api'])->group(function ()
     Route::post('1/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->middleware('auth')
         ->name('logout');
-
-    Route::get('1/user', function (Request $request) {
-        return $request->user();
-    });
 });
 
 
