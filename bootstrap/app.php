@@ -12,7 +12,6 @@ use \Illuminate\Auth\AuthenticationException;
 use \Illuminate\Validation\ValidationException;
 use \Illuminate\Http\Exceptions\HttpResponseException;
 use \App\Exceptions\RateLimitedException;
-use \App\Exceptions\UnauthenticatedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
