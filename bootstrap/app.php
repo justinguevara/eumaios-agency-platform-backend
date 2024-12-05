@@ -12,6 +12,7 @@ use \Illuminate\Auth\AuthenticationException;
 use \Illuminate\Validation\ValidationException;
 use \Illuminate\Http\Exceptions\HttpResponseException;
 use \App\Exceptions\RateLimitedException;
+use \App\Exceptions\UnauthenticatedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -35,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->group('api', [
             \Illuminate\Routing\Middleware\SubstituteBindings::class, // model binding
-            \Illuminate\Session\Middleware\StartSession::class, // auth
+            \Illuminate\Session\Middleware\StartSession::class, // 'auth'
             'force-api-header',
         ]);
     })->withExceptions(function (Exceptions $exceptions) {
@@ -49,6 +50,12 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
      
+        $exceptions->render(function (AuthenticationException $e, Request $request) {
+            return response()->json([
+                'message' => 'Unauthenticated.'
+            ], Response::HTTP_UNAUTHORIZED);
+        });
+
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             return response()->json([
                 'message' => 'Entity not found.'
@@ -59,12 +66,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'message' => $e->getMessage(),
             ], Response::HTTP_NOT_FOUND);
-        });
-
-        $exceptions->render(function (AuthenticationException $e, Request $request) {
-            return response()->json([
-                'message' => 'Unauthorized.'
-            ], Response::HTTP_FORBIDDEN);
         });
 
         $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
