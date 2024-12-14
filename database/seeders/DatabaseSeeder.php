@@ -20,6 +20,14 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        $publishers_sequence_callback = function (Sequence $sequence) {
+            $description = null;
+            if (rand(1, 3) <= 2) {
+                $description = fake()->sentence(32, true);
+            }
+            return ['description' => $description];
+        };
+
         Network::factory()
             ->count(2)
             ->create();
@@ -50,6 +58,7 @@ class DatabaseSeeder extends Seeder
             ->has(
                 Publisher::factory()
                     ->count(50)
+                    ->sequence($publishers_sequence_callback)
             )
             ->has(
                 Publisher::factory()
@@ -85,6 +94,7 @@ class DatabaseSeeder extends Seeder
                         }
                     )
             )
+            ->sequence($publishers_sequence_callback)
             ->create();
 
         // @todo review - https://stackoverflow.com/questions/44628406/why-is-it-strongly-recommended-not-to-use-the-env-helper-when-caching-config
