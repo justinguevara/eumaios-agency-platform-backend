@@ -1,6 +1,6 @@
 ## Eumaios
 
-"Eumaios" is an example Laravel API backend that implements various basic Laravel features, such as:
+"Eumaios" is an example Laravel based backend that implements various basic Laravel features, such as:
 - Seeders
 - Database migrations
 - Rate limiting
