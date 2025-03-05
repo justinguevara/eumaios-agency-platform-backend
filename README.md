@@ -1,4 +1,4 @@
-## "Eumaios"
+## Eumaios (PHP+Laravel backend)
 
 "Eumaios" is a sample Laravel API backend that implements various basic Laravel features, such as:
 - Seeders
